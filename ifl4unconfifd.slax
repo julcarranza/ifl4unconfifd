@@ -1,0 +1,109 @@
+/* * ---------------------------------------------------------------------
+#  *  Author        : Julio Carranza
+#  *  Name          : ifl4unconfifd.slax
+#  *  Version       : 1.0  
+#  *
+#  *  Last Modified : 2016-July-14
+#  *  Script Type   : commit
+#  *  Description   : Adds unit 0 to uncofigured 'ge', 'xe' and 'et'  
+#  *                  interfaces. In this way LLDP is enabled in the
+#  *                  switches. Script runs every 5 minutes to look
+#  *                  for unconfigured interfaces.
+#  *
+#  *  License       : BSD-Style
+#  *  Copyright (c) 2010 Julio Carranza. 
+#  *  Redistribution and use in source and binary forms, with or without
+#  *  modification, are permitted provided that the following conditions
+#  *  are met: 1. Redistributions of source code must retain the above
+#  *  copyright notice, this list of conditions and the following
+#  *  disclaimer.  2. Redistributions in binary form must reproduce the
+#  *  above copyright notice, this list of conditions and the following
+#  *  disclaimer in the documentation and/or other materials provided
+#  *  with the distribution.  3. The name of the author may not be used
+#  *  to endorse or promote products derived from this software without
+#  *  specific prior written permission.  THIS SOFTWARE IS PROVIDED BY
+#  *  THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+#  *  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+#  *  DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+#  *  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+#  *  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+#  *  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+#  *  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+#  *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  *  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+#  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# */
+
+version 1.0;
+
+ns junos = "http://xml.juniper.net/junos/*/junos";
+ns xnm = "http://xml.juniper.net/xnm/1.1/xnm";
+ns jcs = "http://xml.juniper.net/junos/commit-scripts/1.0";
+ns str = "http://exslt.org/strings";
+ns func extension = "http://exslt.org/functions";
+ns util extension = "http://xml.juniper.net/util";
+import "../import/junos.xsl";
+
+var $event-definition = {
+    <event-options> {
+        <generate-event> {
+            <name> "five-min-timer";
+                <time-interval> "300";
+        }                               
+        <policy> {
+            <name> "ifl4unconfifd";
+            <events> "five-min-timer";
+            <then>{
+                <event-script>{
+                   <name> "ifl4unconfifd.slax";
+                }
+            }
+        }
+    }
+}
+
+match /{	
+    /* Retrieve show interfaces and stores output in $ifd*/
+    var $ifds = jcs:invoke ( "get-interface-information" ); 
+
+    /* Retrieve the current configuration */
+    var $configuration = jcs:invoke( "get-configuration" );
+	
+    /* Adds unit 0 to the unconfigured interfaces */
+    var $change := {
+        <configuration> {
+            <interfaces> {
+                /* Check for interfaces starting with 'ge-', 'xe-'and et-' */
+                for-each ($ifds/physical-interface[ starts-with(name, 'ge-') ||starts-with(name, 'et-') || starts-with(name, 'xe-') ]) {
+                    var $ifd = name;
+                    if( jcs:empty( $configuration/interfaces/interface[name==$ifd] ) ) {
+                        <interface> {
+                            <name> $ifd;
+                            <unit> "0";	
+                        } 
+                    }
+                }
+	        }
+        }
+    }
+		   
+    /* Load and commit the configuration change */
+    var $connection = jcs:open();
+    var $results := {
+        call jcs:load-configuration( $connection, $configuration=$change );
+    }
+    var $close-results = jcs:close( $connection );
+          
+    /* Report either errors or success */
+    if( $results//xnm:error ) {
+        expr jcs:syslog( "external.error", "Commit Error: ", message );
+    }
+    else {
+        for-each( $change/configuration/interfaces/interface ) {
+	    expr jcs:syslog( "external.info", name, ".0 has been configured." );
+        }
+    }
+}
+
+
