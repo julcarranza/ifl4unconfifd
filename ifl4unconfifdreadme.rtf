@@ -1,0 +1,572 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf100
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 This script  reads the \'93show interfaces\'94 output, and configured the unit 0 on them if they don\'92t have any configuration in the router. Below the verification first as event script then as an op script.\
+\'a0\
+\{master:0\}\
+jcarranza@qfx5100lab> show configuration event-options\
+event-script \{\
+\'a0\'a0\'a0 file ifl4unconfifd.slax;\
+\}\
+\'a0\
+\'a0\
+\{master:0\}[edit]\
+jcarranza@qfx5100lab# delete interfaces xe-0/0/20\
+\
+\{master:0\}[edit]\
+jcarranza@qfx5100lab# delete interfaces xe-0/0/21\'a0\'a0\
+\'a0\
+\{master:0\}[edit]\
+jcarranza@qfx5100lab# commit and-quit\
+configuration check succeeds\
+commit complete\
+Exiting configuration mode\
+\
+\{master:0\}\
+jcarranza@qfx5100lab> monitor start messages\'a0\
+\'a0\
+\{master:0\}\
+jcarranza@qfx5100lab>\
+*** messages ***\
+Jul 14 20:03:08\'a0 qfx5100lab mgd[48073]: UI_CMDLINE_READ_LINE: User 'jcarranza', command 'monitor start messages '\
+Jul 14 20:03:18\'a0 qfx5100lab /kernel: tcp_auth_ok: Packet from 2001:559::672:63367 unexpectedly has MD5 digest\
+Jul 14 20:03:18\'a0 qfx5100lab eventd[982]: EVENTD_ESCRIPT_EXECUTION: Trying to execute the script 'ifl4unconfifd.slax' from '/var/db/scripts/event/'\
+Jul 14 20:03:19\'a0 qfx5100lab mgd[48129]: auto-snapshot is not configured\
+Jul 14 20:03:19\'a0 qfx5100lab mgd[48129]: UI_AUTH_EVENT: Authenticated user 'root' at permission level 'super-user'\
+Jul 14 20:03:19\'a0 qfx5100lab mgd[48129]: UI_LOGIN_EVENT: User 'root' login, class 'super-user' [48129], ssh-connection '', client-mode 'junoscript'\
+Jul 14 20:03:19\'a0 qfx5100lab mgd[48129]: UI_JUNOSCRIPT_CMD: User 'root' used JUNOScript client to run command 'get-interface-information'\
+Jul 14 20:03:19\'a0 qfx5100lab mgd[48129]: UI_CHILD_START: Starting child '/sbin/ifinfo'\
+Jul 14 20:03:19\'a0 qfx5100lab ifinfo: Failed to find shmlog_dolog8\
+Jul 14 20:03:19\'a0 qfx5100lab mgd[48129]: UI_CHILD_STATUS: Cleanup child '/sbin/ifinfo', PID 48130, status 0\
+Jul 14 20:03:19\'a0 qfx5100lab mgd[48129]: UI_LOGOUT_EVENT: User 'root' logout\
+Jul 14 20:03:19\'a0 qfx5100lab mgd[48131]: auto-snapshot is not configured\
+Jul 14 20:03:19\'a0 qfx5100lab mgd[48131]: UI_AUTH_EVENT: Authenticated user 'root' at permission level 'super-user'\
+Jul 14 20:03:19\'a0 qfx5100lab mgd[48131]: UI_LOGIN_EVENT: User 'root' login, class 'super-user' [48131], ssh-connection '', client-mode 'junoscript'\
+Jul 14 20:03:19\'a0 qfx5100lab mgd[48131]: UI_JUNOSCRIPT_CMD: User 'root' used JUNOScript client to run command 'get-configuration'\
+Jul 14 20:03:19\'a0 qfx5100lab mgd[48131]: UI_LOGOUT_EVENT: User 'root' logout\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: auto-snapshot is not configured\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_AUTH_EVENT: Authenticated user 'root' at permission level 'super-user'\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_LOGIN_EVENT: User 'root' login, class 'super-user' [48132], ssh-connection '', client-mode 'junoscript'\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_JUNOSCRIPT_CMD: User 'root' used JUNOScript client to run command 'lock-configuration'\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_JUNOSCRIPT_CMD: User 'root' used JUNOScript client to run command 'load-configuration format="xml" action="merge"'\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CFG_AUDIT_OTHER: User 'root' set: [juniper-config interfaces xe-0/0/20 unit 0]\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CFG_AUDIT_OTHER: User 'root' set: [juniper-config interfaces xe-0/0/21 unit 0]\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_JUNOSCRIPT_CMD: User 'root' used JUNOScript client to run command 'commit-configuration'\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT: User 'root' requested 'commit' operation (comment: none)\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: start loading commit script changes\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: no commit script changes\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: no transient commit script changes\
+Jul 14 20:03:20 \'a0qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: finished loading commit script changes\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: copying juniper.db to juniper.data+\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: finished copying juniper.db to juniper.data+\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: exporting juniper.conf\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: expanding interface-ranges\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: finished expanding interface-ranges\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: expanding groups\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: finished expanding groups\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: setup foreign files\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: update license counters\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: finish license counters\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: propagating foreign files\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: complete foreign files\
+Jul 14 20:03:20 \'a0qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: dropping unchanged foreign files\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_START: Starting child '/usr/sbin/ffp'\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/ffp', PID 48138, status 0\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: daemons checking new configuration\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: Routing protocols process checking new configuration\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_START: Starting child '/usr/sbin/rpd'\
+Jul 14 20:03:20\'a0 qfx5100lab rpd: proceeding. -C\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/rpd', PID 48153, status 0\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: Chassis control process checking new configuration\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_START: Starting child '/usr/sbin/chassisd'\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/chassisd', PID 48156, status 0\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: Firewall process checking new configuration\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_START: Starting child '/usr/sbin/dfwd'\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/dfwd', PID 48157, status 0\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: Interface control process checking new configuration\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_START: Starting child '/sbin/dcd'\
+Jul 14 20:03:20\'a0 qfx5100lab cgatool: cga_key2der: DER-encoded key is 162 bytes\
+Jul 14 20:03:20\'a0 qfx5100lab cgatool: cga_generate: --- Finding modifier ---\
+Jul 14 20:03:20\'a0 qfx5100lab cgatool: opssec: took\'a0\'a0\'a0\'a0\'a0 0.000018 seconds (0 ops)\
+Jul 14 20:03:20\'a0 qfx5100lab cgatool: opssec: 0 ops per second\
+Jul 14 20:03:20\'a0 qfx5100lab cgatool: cga_generate: --- Setting bits ---\
+Jul 14 20:03:20\'a0 qfx5100lab cgatool: cga_generate: --- Concatenating prefix and eui64 ---\
+Jul 14 20:03:20\'a0 qfx5100lab cgatool: concat: fe80::1c33:8533:a920:a374\
+Jul 14 20:03:20\'a0 qfx5100lab cgatool: cga_generate: generated address is fe80::1c33:8533:a920:a374\
+Jul 14 20:03:20\'a0 qfx5100lab dcd[48159]: ae2 : Warning: aggregated-ether-options link-speed no kernel value! default to\'a0 0\
+Jul 14 20:03:20\'a0 qfx5100lab dcd[48159]: ae12 : Warning: aggregated-ether-options link-speed no kernel value! default to\'a0 0\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_STATUS: Cleanup child '/sbin/dcd', PID 48159, status 0\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: Management Information Base II process checking new configuration\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_START: Starting child '/usr/sbin/mib2d'\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/mib2d', PID 48162, status 0\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: Packet Forwarding Engine statistics management process checking new configuration\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_START: Starting child '/usr/sbin/pfed'\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/pfed', PID 48163, status 0\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: Traffic sampling control process checking new configuration\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_START: Starting child '/usr/sbin/sampled'\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/sampled', PID 48164, status 0\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: Redundancy interface management process checking new configuration\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_START: Starting child '/usr/sbin/rdd'\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/rdd', PID 48165, status 0\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: Connectivity fault management process checking new configuration\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_START: Starting child '/usr/sbin/cfmd'\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/cfmd', PID 48166, status 0\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: Layer 2 address flooding and learning process checking new configuration\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_START: Starting child '/usr/sbin/l2ald'\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/l2ald', PID 48167, status 0\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: Layer 2 Control Protocol process checking new configuration\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_START: Starting child '/usr/sbin/l2cpd'\
+Jul 14 20:03:20\'a0 qfx5100lab l2cpd: proceeding. -C\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/l2cpd', PID 48168, status 0\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_START: Starting child '/usr/sbin/ffp'\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/ffp', PID 48169, status 0\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: commit wrapup...\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: start ffp activate\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_START: Starting child '/usr/sbin/ffp'\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/ffp', PID 48170, status 0\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: activating '/var/etc/pam.conf'\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: activating '/var/etc/ifinfo.conf'\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: activating '/var/etc/issue'\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: activating '/var/etc/certs'\
+Jul 14 20:03:20\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: activating '/var/etc/ifmdata.conf'\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: executing foreign_commands\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: not executing ui_commit in rc.ui\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: finish ffp activate\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: copying configuration to juniper.save\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: db_check_constraint_ids_clear start\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: db_check_constraint_ids_clear done\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: db_groups_info_clear start\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: db_groups_info_clear done\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: activating '/var/run/db/juniper.data'\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: Rotate backup configs\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Simple Network Management Protocol process', pid 1363, signal 31, status 0 with notification errors enabled\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: ssync begins\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: ssync ends\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: Read ddl top handle 0x0 for logical-router default\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: task state:\'a0 <ReConfig Foreground ParseConfig>\
+Jul 14 20:03:21\'a0 qfx5100lab fpc0 CMLC_LOCAL: Socket event, 0x8\
+Jul 14 20:03:21 \'a0qfx5100lab fpc0 CMLC_LOCAL: Parsing IPC message\
+Jul 14 20:03:21\'a0 qfx5100lab fpc0 IPCMSG: ipc message pointer = 0x95fe1a10\
+Jul 14 20:03:21\'a0 qfx5100lab fpc0 IPCMSG: action -> cmd\'a0\
+Jul 14 20:03:21\'a0 qfx5100lab fpc0 IPCMSG: type: 4, subtype: 258, length: 24\
+Jul 14 20:03:21\'a0 qfx5100lab fpc0 CMQFX: no change in uft config inside PFE. Dont reinit the asic\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: notifying daemons of new configuration\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying none(0)\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: cannot signal 'None process', signal 1, no pid\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying rpd(2)\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Routing protocols process', pid 1344, signal 1, status 0 with notification errors enabled\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying chassisd(5)\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Chassis control process', pid 1217, signal 1, status 0 with notification errors enabled\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying dfwd(11)\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Firewall process', pid 1353, signal 1, status 0 with notification errors enabled\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying dcd(12)\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Interface control process', pid 1376, signal 1, status 0 with notification errors enabled\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying mib2d(14)\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Management Information Base II process', pid 1343, signal 1, status 0 with notification errors enabled\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying pfed(17)\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Packet Forwarding Engine statistics management process', pid 1347, signal 1, status 0 with notification errors enabled\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying sampled(18)\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: RPD_TASK_REINIT: Reinitializing\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Traffic sampling control process', pid 1348, signal 1, status 0 with notification errors enabled\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying rdd(25)\
+Jul 14 20:03:21\'a0 qfx5100lab chassisd[1217]: CHASSISD_PARSE_COMPLETE: Using new configuration\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Redundancy interface management process', pid 1355, signal 1, status 0 with notification errors enabled\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying cfmd(30)\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: cannot signal 'Connectivity fault management process', signal 1, no pid\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying l2ald(50)\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: task_reconfigure reinitializing done\
+Jul 14 20:03:21\'a0 qfx5100lab /kernel: pointchange for flag 00000008 not supported on IFD ae12\
+Jul 14 20:03:21\'a0 qfx5100lab cosd[1351]: link protection 0 for intf ae12\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: Decode ifd ae12 index 652: ifdm_flags 0xc001\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: Decode ifd xe-0/0/13 index 665: ifdm_flags 0xc001\
+Jul 14 20:03:21\'a0 qfx5100lab fpc0 CMLC_LOCAL: Socket event, 0x8\
+Jul 14 20:03:21\'a0 qfx5100lab dcd[1376]: ae12 : aggregated-ether-options link-speed set to kernel value of\'a0 10000000000\
+Jul 14 20:03:21\'a0 qfx5100lab fpc0 CMLC_LOCAL: Parsing IPC message\
+Jul 14 20:03:21\'a0 qfx5100lab fpc0 IPCMSG: ipc message pointer = 0x95fe1a10\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: EVENT <Delete UpDown> xe-0/0/20.16386 index 566 <Broadcast Multicast> address #0 10.e.7e.af.9a.97\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: Decode ifd xe-0/0/20 index 666: ifdm_flags 0xc000\
+Jul 14 20:03:21\'a0 qfx5100lab fpc0 IPCMSG: action -> cmd\'a0\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: EVENT <Delete UpDown> xe-0/0/21.16386 index 569 <Broadcast Multicast> address #0 10.e.7e.af.9a.98\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: Decode ifd xe-0/0/21 index 667: ifdm_flags 0xc000\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: Decode ifd ae0 index 640: ifdm_flags 0xc000\
+Jul 14 20:03:21\'a0 qfx5100lab /kernel: ae0: Unknown TLV type 280\
+Jul 14 20:03:21\'a0 qfx5100lab cosd[1351]: link protection 0 for intf ae0\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: Decode ifd ae12 index 652: ifdm_flags 0xc001\
+Jul 14 20:03:21\'a0 qfx5100lab /kernel: ae12: Unknown TLV type 280\
+Jul 14 20:03:21\'a0 qfx5100lab cosd[1351]: link protection 0 for intf ae12\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: Decode ifd et-0/0/48 index 668: ifdm_flags 0xc000\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: Decode ifd et-0/0/49 index 669: ifdm_flags 0xc000\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: Decode ifd gr-0/0/0 index 657: ifdm_flags 0x8010\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: EVENT <MTU> gr-0/0/0 index 657 <Up Broadcast Multicast>\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: Decode ifd irb index 656: ifdm_flags 0x8000\
+Jul 14 20:03:21\'a0 qfx5100lab /kernel: if_pfe_iflconfig_tlv_helper xe-0/0/20.0: header->tlv_type 105 received\
+Jul 14 20:03:21\'a0 qfx5100lab /kernel: if_pfe_mcae_color_pfe_update: xe-0/0/20.0: need to send mcae color to pfe\
+Jul 14 20:03:21\'a0 qfx5100lab /kernel: if_pfe_mcae_color_pfe_update: color_type: 0, color: 0\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: Decode ifd xe-0/0/13 index 665: ifdm_flags 0xc001\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: EVENT <Add> xe-0/0/20.0 index 565 <Up Broadcast Multicast> address #0 10.e.7e.af.9a.97\
+Jul 14 20:03:21\'a0 qfx5100lab /kernel: if_pfe_iflconfig_tlv_helper xe-0/0/21.0: header->tlv_type 105 received\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: EVENT <Add> xe-0/0/21.0 index 568 <Up Broadcast Multicast> address #0 10.e.7e.af.9a.98\
+Jul 14 20:03:21\'a0 qfx5100lab /kernel: if_pfe_mcae_color_pfe_update: xe-0/0/21.0: need to send mcae color to pfe\
+Jul 14 20:03:21\'a0 qfx5100lab /kernel: if_pfe_mcae_color_pfe_update: color_type: 0, color: 0\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: Decode ifd xe-0/0/20 index 666: ifdm_flags 0xc000\
+Jul 14 20:03:21\'a0 qfx5100lab mib2d[1343]: SNMP_TRAP_LINK_DOWN: ifIndex 570, ifAdminStatus down(2), ifOperStatus down(2), ifName xe-0/0/20.16386\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: Decode ifd xe-0/0/21 index 667: ifdm_flags 0xc000\
+Jul 14 20:03:21\'a0 qfx5100lab fpc0 IPCMSG: type: 4, subtype: 258, length: 24\
+Jul 14 20:03:21\'a0 qfx5100lab mib2d[1343]: SNMP_TRAP_LINK_DOWN: ifIndex 572, ifAdminStatus down(2), ifOperStatus down(2), ifName xe-0/0/21.16386\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: EVENT <SNMP Index> xe-0/0/20.0 index 565 <Up Broadcast Multicast> address #0 10.e.7e.af.9a.97\
+Jul 14 20:03:21\'a0 qfx5100lab rpd[1344]: EVENT <SNMP Index> xe-0/0/21.0 index 568 <Up Broadcast Multicast> address #0 10.e.7e.af.9a.98\
+Jul 14 20:03:21\'a0 qfx5100lab fpc0 CMQFX: no change in uft-num-prefix inside PFE. Dont reinit the asic\
+Jul 14 20:03:21\'a0 qfx5100lab fpc0 CMLC_LOCAL: Parsing IPC message\
+Jul 14 20:03:21\'a0 qfx5100lab /kernel: if_pfe_mcae_color_pfe_update: xe-0/0/20.0: need to send mcae color to pfe\
+Jul 14 20:03:21\'a0 qfx5100lab /kernel: if_pfe_mcae_color_pfe_update: color_type: 0, color: 0\
+Jul 14 20:03:21\'a0 qfx5100lab /kernel: if_pfe_mcae_color_pfe_update: xe-0/0/21.0: need to send mcae color to pfe\
+Jul 14 20:03:21\'a0 qfx5100lab /kernel: if_pfe_mcae_color_pfe_update: color_type: 0, color: 0\
+Jul 14 20:03:21\'a0 qfx5100lab mib2d[1343]: SNMP_TRAP_LINK_UP: ifIndex 971, ifAdminStatus up(1), ifOperStatus up(1), ifName xe-0/0/20.0\
+Jul 14 20:03:21\'a0 qfx5100lab mib2d[1343]: SNMP_TRAP_LINK_UP: ifIndex 567, ifAdminStatus up(1), ifOperStatus up(1), ifName xe-0/0/21.0\
+Jul 14 20:03:21\'a0 qfx5100lab fpc0 IPCMSG: ipc message pointer = 0x95fe1a10\
+Jul 14 20:03:21\'a0 qfx5100lab fpc0 IPCMSG: action -> cmd\'a0\
+Jul 14 20:03:21\'a0 qfx5100lab fpc0 IPCMSG: type: 4, subtype: 258, length: 24\
+Jul 14 20:03:21\'a0 qfx5100lab fpc0 CMQFX: Auto-channel-global flag val:0\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Layer 2 address flooding and learning process', pid 1365, signal 1, status 0 with notification errors enabled\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying l2cpd(52)\
+Jul 14 20:03:21\'a0 qfx5100lab l2cpd[1338]: JTASK_TASK_REINIT: Reinitializing\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Layer 2 Control Protocol process', pid 1338, signal 1, status 0 with notification errors enabled\
+Jul 14 20:03:21\'a0 qfx5100lab l2cpd[1338]: task_reconfigure reinitializing done\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: ssync begins\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: ssync ends\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: commit complete\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_COMPLETED: commit complete\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Alarm control process', pid 1340, signal 30, status 0 with notification errors enabled\
+Jul 14 20:03:21\'a0 qfx5100lab mgd[48132]: UI_JUNOSCRIPT_CMD: User 'root' used JUNOScript client to run command 'unlock-configuration'\
+Jul 14 20:03:21\'a0 qfx5100lab cscript: xe-0/0/20.0 has been configured.\
+Jul 14 20:03:21\'a0 qfx5100lab cscript: xe-0/0/21.0 has been configured.\
+\
+\'a0\
+\{master:0\}\
+jcarranza@qfx5100lab> monitor stop messages\
+\
+\{master:0\}\
+jcarranza@qfx5100lab> show configuration interfaces xe-0/0/20\
+unit 0;\
+\
+\{master:0\}\
+jcarranza@qfx5100lab> show configuration interfaces xe-0/0/21\'a0\'a0\
+unit 0;\
+\
+Like an op script\
+\'a0\
+master:0\}\
+jcarranza@qfx5100lab> configure private\
+warning: uncommitted changes will be discarded on exit\
+Entering configuration mode\
+\'a0\
+\{master:0\}[edit]\
+jcarranza@qfx5100lab# show event-options\
+event-script \{\
+\'a0\'a0\'a0 file ifl4unconfifd.slax;\
+\}\
+\'a0\
+\{master:0\}[edit]\
+jcarranza@qfx5100lab# deactivate event-options\
+\'a0\
+\{master:0\}[edit]\
+jcarranza@qfx5100lab# delete interfaces xe-0/0/20\
+\'a0\
+\{master:0\}[edit]\
+jcarranza@qfx5100lab# delete interfaces xe-0/0/21\'a0\'a0\'a0\
+\'a0\
+\{master:0\}[edit]\
+jcarranza@qfx5100lab# commit and-quit\
+configuration check succeeds\
+commit complete\
+Exiting configuration mode\
+\'a0\
+\{master:0\}\
+jcarranza@qfx5100lab> ssh\'a0root@127.0.0.1\
+Password:\
+--- JUNOS 13.2X51-D30.4 built 2014-11-27 11:45:49 UTC\
+root@it02:RE:0% cp /var/db/scripts/event/ifl4unconfifd.slax /var/db/scripts/op/ifl4unconfifd.slax\
+root@it02:RE:0% exit\
+logout\
+Connection to 127.0.0.1 closed.\
+\'a0\
+\{master:0\}\
+jcarranza@qfx5100lab> configure\
+Entering configuration mode\
+\'a0\
+\{master:0\}[edit]\
+jcarranza@qfx5100lab# set system scripts op file ifl4unconfifd.slax\
+\'a0\
+\{master:0\}[edit]\
+jcarranza@qfx5100lab# show | compare\
+[edit system]\
++\'a0\'a0 scripts \{\
++\'a0\'a0\'a0\'a0\'a0\'a0 op \{\
++\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 file ifl4unconfifd.slax;\
++\'a0\'a0\'a0\'a0\'a0\'a0 \}\
++\'a0\'a0 \}\
+\'a0\
+\{master:0\}[edit]\
+jcarranza@qfx5100lab# commit and-quit\
+configuration check succeeds\
+commit complete\
+Exiting configuration mode\
+\'a0\
+\{master:0\}\
+jcarranza@qfx5100lab> show configuration interfaces xe-0/0/20\
+\'a0\
+\{master:0\}\
+jcarranza@qfx5100lab> show configuration interfaces xe-0/0/21\'a0\'a0\'a0\
+\'a0\
+\{master:0\}\
+jcarranza@qfx5100lab> monitor start messages\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\
+Jul 15 20:45:30\'a0 qfx5100lab /kernel: tcp_auth_ok: Packet from 2001:559::672:58560 unexpectedly has MD5 digest\
+jcarranza@qfx5100lab> op ifl4unconfifd\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+Jul 15 20:45:36\'a0 qfx5100lab last message repeated 2 times\
+Jul 15 20:45:37\'a0 qfx5100lab mgd[94766]: UI_CMDLINE_READ_LINE: User 'jcarranza', command 'op ifl4unconfifd '\
+Jul 15 20:45:38\'a0 qfx5100lab file[94946]: auto-snapshot is not configured\
+Jul 15 20:45:38\'a0 qfx5100lab file[94946]: UI_AUTH_EVENT: Authenticated user 'jcarranza' at permission level 'j-super-user'\
+Jul 15 20:45:38\'a0 qfx5100lab file[94946]: UI_LOGIN_EVENT: User 'jcarranza' login, class 'j-super-user' [94946], ssh-connection '172.29.109.40 54460 172.19.64.162 22', client-mode 'junoscript'\
+Jul 15 20:45:38\'a0 qfx5100lab file[94946]: UI_JUNOSCRIPT_CMD: User 'jcarranza' used JUNOScript client to run command 'get-interface-information'\
+Jul 15 20:45:38\'a0 qfx5100lab file[94946]: UI_CHILD_START: Starting child '/sbin/ifinfo'\
+Jul 15 20:45:38\'a0 qfx5100lab ifinfo: Failed to find shmlog_dolog8\
+Jul 15 20:45:38\'a0 qfx5100lab file[94946]: UI_CHILD_STATUS: Cleanup child '/sbin/ifinfo', PID 94947, status 0\
+Jul 15 20:45:38\'a0 qfx5100lab file[94946]: UI_LOGOUT_EVENT: User 'jcarranza' logout\
+Jul 15 20:45:38\'a0 qfx5100lab file[94948]: auto-snapshot is not configured\
+Jul 15 20:45:38\'a0 qfx5100lab file[94948]: UI_AUTH_EVENT: Authenticated user 'jcarranza' at permission level 'j-super-user'\
+Jul 15 20:45:38\'a0 qfx5100lab file[94948]: UI_LOGIN_EVENT: User 'jcarranza' login, class 'j-super-user' [94948], ssh-connection '172.29.109.40 54460 172.19.64.162 22', client-mode 'junoscript'\
+Jul 15 20:45:38\'a0 qfx5100lab file[94948]: UI_JUNOSCRIPT_CMD: User 'jcarranza' used JUNOScript client to run command 'get-configuration'\
+Jul 15 20:45:38\'a0 qfx5100lab file[94948]: UI_LOGOUT_EVENT: User 'jcarranza' logout\
+Jul 15 20:45:38\'a0 qfx5100lab file[94949]: auto-snapshot is not configured\
+Jul 15 20:45:38\'a0 qfx5100lab file[94949]: UI_AUTH_EVENT: Authenticated user 'jcarranza' at permission level 'j-super-user'\
+Jul 15 20:45:38\'a0 qfx5100lab file[94949]: UI_LOGIN_EVENT: User 'jcarranza' login, class 'j-super-user' [94949], ssh-connection '172.29.109.40 54460 172.19.64.162 22', client-mode 'junoscript'\
+Jul 15 20:45:38\'a0 qfx5100lab file[94949]: UI_JUNOSCRIPT_CMD: User 'jcarranza' used JUNOScript client to run command 'lock-configuration'\
+Jul 15 20:45:38\'a0 qfx5100lab file[94949]: UI_JUNOSCRIPT_CMD: User 'jcarranza' used JUNOScript client to run command 'load-configuration format="xml" action="merge"'\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CFG_AUDIT_OTHER: User 'jcarranza' set: [juniper-config interfaces xe-0/0/20 unit 0]\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CFG_AUDIT_OTHER: User 'jcarranza' set: [juniper-config interfaces xe-0/0/21 unit 0]\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_JUNOSCRIPT_CMD: User 'jcarranza' used JUNOScript client to run command 'commit-configuration'\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT: User 'jcarranza' requested 'commit' operation (comment: none)\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: start loading commit script changes\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: no commit script c\
+\{master:0\}\
+jcarranza@qfx5100lab> hanges\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: no transient commit script changes\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: finished loading commit script changes\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: copying juniper.db to juniper.data+\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: finished copying juniper.db to juniper.data+\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: exporting juniper.conf\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: expanding interface-ranges\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: finished expanding interface-ranges\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: expanding groups\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: finished expanding groups\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: setup foreign files\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: update license counters\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: finish license counters\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: propagating foreign files\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: complete foreign files\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: dropping unchanged foreign files\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_START: Starting child '/usr/sbin/ffp'\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/ffp', PID 94955, status 0\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: daemons checking new configuration\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: Routing protocols process checking new configuration\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_START: Starting child '/usr/sbin/rpd'\
+Jul 15 20:45:39\'a0 qfx5100lab rpd: proceeding. -C\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/rpd', PID 94970, status 0\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: Chassis control process checking new configuration\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_START: Starting child '/usr/sbin/chassisd'\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/chassisd', PID 94973, status 0\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: Firewall process checking new configuration\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_START: Starting child '/usr/sbin/dfwd'\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/dfwd', PID 94974, status 0\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: Interface control process checking new configuration\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_START: Starting child '/sbin/dcd'\
+Jul 15 20:45:39\'a0 qfx5100lab cgatool: cga_key2der: DER-encoded key is 162 bytes\
+Jul 15 20:45:39\'a0 qfx5100lab cgatool: cga_generate: --- Finding modifier ---\
+Jul 15 20:45:39\'a0 qfx5100lab cgatool: opssec: took\'a0\'a0\'a0\'a0\'a0 0.000018 seconds (0 ops)\
+Jul 15 20:45:39\'a0 qfx5100lab cgatool: opssec: 0 ops per second\
+Jul 15 20:45:39\'a0 qfx5100lab cgatool: cga_generate: --- Setting bits ---\
+Jul 15 20:45:39\'a0 qfx5100lab cgatool: cga_generate: --- Concatenating prefix and eui64 ---\
+Jul 15 20:45:39\'a0 qfx5100lab cgatool: concat: fe80::18a3:5f0:a273:591d\
+Jul 15 20:45:39\'a0 qfx5100lab cgatool: cga_generate: generated address is fe80::18a3:5f0:a273:591d\
+Jul 15 20:45:39\'a0 qfx5100lab dcd[94976]: ae2 : Warning: aggregated-ether-options link-speed no kernel value! default to\'a0 0\
+Jul 15 20:45:39\'a0 qfx5100lab dcd[94976]: ae12 : Warning: aggregated-ether-options link-speed no kernel value! default to\'a0 0\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_STATUS: Cleanup child '/sbin/dcd', PID 94976, status 0\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: Management Information Base II process checking new configuration\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_START: Starting child '/usr/sbin/mib2d'\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/mib2d', PID 94979, status 0\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: Packet Forwarding Engine statistics management process checking new configuration\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_START: Starting child '/usr/sbin/pfed'\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/pfed', PID 94980, status 0\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: Traffic sampling control process checking new configuration\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_START: Starting child '/usr/sbin/sampled'\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/sampled', PID 94981, status 0\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: Redundancy interface management process checking new configuration\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_START: Starting child '/usr/sbin/rdd'\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/rdd', PID 94982, status 0\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: Connectivity fault management process checking new configuration\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_START: Starting child '/usr/sbin/cfmd'\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/cfmd', PID 94983, status 0\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: Layer 2 address flooding and learning process checking new configuration\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_START: Starting child '/usr/sbin/l2ald'\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/l2ald', PID 94984, status 0\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: Layer 2 Control Protocol process checking new configuration\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_START: Starting child '/usr/sbin/l2cpd'\
+Jul 15 20:45:39\'a0 qfx5100lab l2cpd: proceeding. -C\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/l2cpd', PID 94985, status 0\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_START: Starting child '/usr/sbin/ffp'\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/ffp', PID 94986, status 0\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: commit wrapup...\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: start ffp activate\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_START: Starting child '/usr/sbin/ffp'\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_CHILD_STATUS: Cleanup child '/usr/sbin/ffp', PID 94987, status 0\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: activating '/var/etc/pam.conf'\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: activating '/var/etc/ifinfo.conf'\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: activating '/var/etc/issue'\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: activating '/var/etc/certs'\
+Jul 15 20:45:39\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: activating '/var/etc/ifmdata.conf'\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: executing foreign_commands\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: not executing ui_commit in rc.ui\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: finish ffp activate\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: copying configuration to juniper.save\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: db_check_constraint_ids_clear start\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: db_check_constraint_ids_clear done\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: db_groups_info_clear start\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: db_groups_info_clear done\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: activating '/var/run/db/juniper.data'\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: Rotate backup configs\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Simple Network Management Protocol process', pid 1363, signal 31, status 0 with notification errors enabled\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: ssync begins\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: ssync ends\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: Read ddl top handle 0x0 for logical-router default\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: task state:\'a0 <ReConfig Foreground ParseConfig>\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: notifying daemons of new configuration\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying none(0)\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: cannot signal 'None process', signal 1, no pid\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying rpd(2)\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: RPD_TASK_REINIT: Reinitializing\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Routing protocols process', pid 1344, signal 1, status 0 with notification errors enabled\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying chassisd(5)\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: task_reconfigure reinitializing done\
+Jul 15 20:45:40\'a0 qfx5100lab fpc0 CMLC_LOCAL: Socket event, 0x8\
+Jul 15 20:45:40\'a0 qfx5100lab chassisd[1217]: CHASSISD_PARSE_COMPLETE: Using new configuration\
+Jul 15 20:45:40\'a0 qfx5100lab fpc0 CMLC_LOCAL: Parsing IPC message\
+Jul 15 20:45:40\'a0 qfx5100lab fpc0 IPCMSG: ipc message pointer = 0x95fe1a10\
+Jul 15 20:45:40\'a0 qfx5100lab fpc0 IPCMSG: action -> cmd\'a0\'a0\
+Jul 15 20:45:40\'a0 qfx5100lab fpc0 IPCMSG: type: 4, subtype: 258, length: 24\
+Jul 15 20:45:40\'a0 qfx5100lab fpc0 CMQFX: no change in uft config inside PFE. Dont reinit the asic\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Chassis control process', pid 1217, signal 1, status 0 with notification errors enabled\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying dfwd(11)\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Firewall process', pid 1353, signal 1, status 0 with notification errors enabled\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying dcd(12)\
+Jul 15 20:45:40\'a0 qfx5100lab dcd[1376]: ae12 : aggregated-ether-options link-speed set to kernel value of\'a0 10000000000\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: EVENT <Delete UpDown> xe-0/0/20.16386 index 566 <Broadcast Multicast> address #0 10.e.7e.af.9a.97\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: Decode ifd xe-0/0/20 index 666: ifdm_flags 0xc000\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: EVENT <Delete UpDown> xe-0/0/21.16386 index 569 <Broadcast Multicast> address #0 10.e.7e.af.9a.98\
+Jul 15 20:45:40\'a0 qfx5100lab fpc0 CMLC_LOCAL: Socket event, 0x8\
+Jul 15 20:45:40\'a0 qfx5100lab /kernel: ae0: Unknown TLV type 280\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: Decode ifd xe-0/0/21 index 667: ifdm_flags 0xc000\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: Decode ifd ae0 index 640: ifdm_flags 0xc000\
+Jul 15 20:45:40\'a0 qfx5100lab fpc0 CMLC_LOCAL: Parsing IPC message\
+Jul 15 20:45:40\'a0 qfx5100lab cosd[1351]: link protection 0 for intf ae0\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: Decode ifd ae12 index 652: ifdm_flags 0xc001\
+Jul 15 20:45:40\'a0 qfx5100lab /kernel: ae12: Unknown TLV type 280\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: Decode ifd et-0/0/48 index 668: ifdm_flags 0xc000\
+Jul 15 20:45:40\'a0 qfx5100lab cosd[1351]: link protection 0 for intf ae12\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: Decode ifd et-0/0/49 index 669: ifdm_flags 0xc000\
+Jul 15 20:45:40\'a0 qfx5100lab fpc0 IPCMSG: ipc message pointer = 0x95fe1a10\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: Decode ifd gr-0/0/0 index 657: ifdm_flags 0x8010\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: EVENT <MTU> gr-0/0/0 index 657 <Up Broadcast Multicast>\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: Decode ifd irb index 656: ifdm_flags 0x8000\
+Jul 15 20:45:40\'a0 qfx5100lab /kernel: if_pfe_iflconfig_tlv_helper xe-0/0/20.0: header->tlv_type 105 received\
+Jul 15 20:45:40\'a0 qfx5100lab /kernel: if_pfe_mcae_color_pfe_update: xe-0/0/20.0: need to send mcae color to pfe\
+Jul 15 20:45:40\'a0 qfx5100lab /kernel: if_pfe_mcae_color_pfe_update: color_type: 0, color: 0\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: Decode ifd xe-0/0/13 index 665: ifdm_flags 0xc001\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: EVENT <Add> xe-0/0/20.0 index 565 <Up Broadcast Multicast> address #0 10.e.7e.af.9a.97\
+Jul 15 20:45:40\'a0 qfx5100lab /kernel: if_pfe_iflconfig_tlv_helper xe-0/0/21.0: header->tlv_type 105 received\
+Jul 15 20:45:40\'a0 qfx5100lab l2ald[1365]: L2ALD_ST_CTL_IN_EFFECT: xe-0/0/20.0: storm control in effect on the port\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: EVENT <Add> xe-0/0/21.0 index 568 <Up Broadcast Multicast> address #0 10.e.7e.af.9a.98\
+Jul 15 20:45:40\'a0 qfx5100lab /kernel: if_pfe_mcae_color_pfe_update: xe-0/0/21.0: need to send mcae color to pfe\
+Jul 15 20:45:40\'a0 qfx5100lab /kernel: if_pfe_mcae_color_pfe_update: color_type: 0, color: 0\
+Jul 15 20:45:40\'a0 qfx5100lab mib2d[1343]: SNMP_TRAP_LINK_DOWN: ifIndex 570, ifAdminStatus down(2), ifOperStatus down(2), ifName xe-0/0/20.16386\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: Decode ifd xe-0/0/20 index 666: ifdm_flags 0xc000\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: Decode ifd xe-0/0/21 index 667: ifdm_flags 0xc000\
+Jul 15 20:45:40\'a0 qfx5100lab mib2d[1343]: SNMP_TRAP_LINK_DOWN: ifIndex 572, ifAdminStatus down(2), ifOperStatus down(2), ifName xe-0/0/21.16386\
+Jul 15 20:45:40\'a0 qfx5100lab fpc0 IPCMSG: action -> cmd\'a0\'a0\
+Jul 15 20:45:40\'a0 qfx5100lab /kernel: if_pfe_mcae_color_pfe_update: xe-0/0/20.0: need to send mcae color to pfe\
+Jul 15 20:45:40\'a0 qfx5100lab /kernel: if_pfe_mcae_color_pfe_update: color_type: 0, color: 0\
+Jul 15 20:45:40\'a0 qfx5100lab /kernel: if_pfe_mcae_color_pfe_update: xe-0/0/21.0: need to send mcae color to pfe\
+Jul 15 20:45:40\'a0 qfx5100lab /kernel: if_pfe_mcae_color_pfe_update: color_type: 0, color: 0\
+Jul 15 20:45:40\'a0 qfx5100lab l2ald[1365]: L2ALD_ST_CTL_IN_EFFECT: xe-0/0/20.0: storm control in effect on the port\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: EVENT <SNMP Index> xe-0/0/20.0 index 565 <Up Broadcast Multicast> address #0 10.e.7e.af.9a.97\
+Jul 15 20:45:40\'a0 qfx5100lab rpd[1344]: EVENT <SNMP Index> xe-0/0/21.0 index 568 <Up Broadcast Multicast> address #0 10.e.7e.af.9a.98\
+Jul 15 20:45:40\'a0 qfx5100lab fpc0 IPCMSG: type: 4, subtype: 258, length: 24\
+Jul 15 20:45:40\'a0 qfx5100lab mib2d[1343]: SNMP_TRAP_LINK_UP: ifIndex 971, ifAdminStatus up(1), ifOperStatus up(1), ifName xe-0/0/20.0\
+Jul 15 20:45:40\'a0 qfx5100lab mib2d[1343]: SNMP_TRAP_LINK_UP: ifIndex 567, ifAdminStatus up(1), ifOperStatus up(1), ifName xe-0/0/21.0\
+Jul 15 20:45:40\'a0 qfx5100lab fpc0 CMQFX: no change in uft-num-prefix inside PFE. Dont reinit the asic\
+Jul 15 20:45:40\'a0 qfx5100lab fpc0 CMLC_LOCAL: Parsing IPC message\
+Jul 15 20:45:40\'a0 qfx5100lab fpc0 IPCMSG: ipc message pointer = 0x95fe1a10\
+Jul 15 20:45:40\'a0 qfx5100lab fpc0 IPCMSG: action -> cmd\'a0\'a0\
+Jul 15 20:45:40\'a0 qfx5100lab fpc0 IPCMSG: type: 4, subtype: 258, length: 24\
+Jul 15 20:45:40\'a0 qfx5100lab fpc0 CMQFX: Auto-channel-global flag val:0\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Interface control process', pid 1376, signal 1, status 0 with notification errors enabled\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying mib2d(14)\
+Jul 15 20:45:40\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Management Information Base II process', pid 1343, signal 1, status 0 with notification errors enabled\
+Jul 15 20:45:41\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying pfed(17)\
+Jul 15 20:45:41\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Packet Forwarding Engine statistics management process', pid 1347, signal 1, status 0 with notification errors enabled\
+Jul 15 20:45:41\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying sampled(18)\
+Jul 15 20:45:41\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Traffic sampling control process', pid 1348, signal 1, status 0 with notification errors enabled\
+Jul 15 20:45:41\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying rdd(25)\
+Jul 15 20:45:41\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Redundancy interface management process', pid 1355, signal 1, status 0 with notification errors enabled\
+Jul 15 20:45:41\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying cfmd(30)\
+Jul 15 20:45:41\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: cannot signal 'Connectivity fault management process', signal 1, no pid\
+Jul 15 20:45:41\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying l2ald(50)\
+Jul 15 20:45:41\'a0 qfx5100lab rpd[1344]: Decode ifd ae12 index 652: ifdm_flags 0xc001\
+Jul 15 20:45:41\'a0 qfx5100lab cosd[1351]: link protection 0 for intf ae12\
+Jul 15 20:45:41\'a0 qfx5100lab rpd[1344]: Decode ifd xe-0/0/13 index 665: ifdm_flags 0xc001\
+Jul 15 20:45:41\'a0 qfx5100lab /kernel: pointchange for flag 00000008 not supported on IFD ae12\
+Jul 15 20:45:41\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Layer 2 address flooding and learning process', pid 1365, signal 1, status 0 with notification errors enabled\
+Jul 15 20:45:41\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress:\'a0 notifying l2cpd(52)\
+Jul 15 20:45:41\'a0 qfx5100lab l2cpd[1338]: JTASK_TASK_REINIT: Reinitializing\
+Jul 15 20:45:41\'a0 qfx5100lab l2cpd[1338]: task_reconfigure reinitializing done\
+Jul 15 20:45:41\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Layer 2 Control Protocol process', pid 1338, signal 1, status 0 with notification errors enabled\
+Jul 15 20:45:41\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: ssync begins\
+Jul 15 20:45:41\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: ssync ends\
+Jul 15 20:45:41\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: commit complete\
+Jul 15 20:45:41\'a0 qfx5100lab file[94949]: UI_COMMIT_COMPLETED: commit complete\
+Jul 15 20:45:41\'a0 qfx5100lab file[94949]: UI_COMMIT_PROGRESS: Commit operation in progress: signaling 'Alarm control process', pid 1340, signal 30, status 0 with notification errors enabled\
+Jul 15 20:45:41\'a0 qfx5100lab file[94949]: UI_JUNOSCRIPT_CMD: User 'jcarranza' used JUNOScript client to run command 'unlock-configuration'\
+Jul 15 20:45:41\'a0 qfx5100lab cscript: xe-0/0/20.0 has been configured.\
+Jul 15 20:45:41\'a0 qfx5100lab cscript: xe-0/0/21.0 has been configured.\
+Jul 15 20:45:43\'a0 qfx5100lab /kernel: tcp_auth_ok: Packet from 2001:559::672:58560 unexpectedly has MD5 digest\
+\'a0\
+\'a0\
+\{master:0\}\
+jcarranza@qfx5100lab> show configuration interfaces xe-0/0/20\
+unit 0;\
+\'a0\
+\{master:0\}\
+jcarranza@qfx5100lab> show configuration interfaces xe-0/0/21\'a0\'a0\'a0\
+unit 0;\
+\'a0\
+\'a0\
+\{master:0\}\
+jcarranza@qfx5100lab>\
+\'a0\
+\{master:0\}\
+jcarranza@qfx5100lab> show lldp statistics\'a0\'a0\'a0\
+Interface\'a0\'a0\'a0 Parent Interface\'a0 Received\'a0 Unknown TLVs\'a0 With Errors\'a0 Discarded TLVs\'a0 Transmitted\'a0 Untransmitted\
+xe-0/0/0\'a0\'a0\'a0\'a0 ae1\'a0\'a0\'a0\'a0\'a0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a00\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 9885\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+xe-0/0/1\'a0\'a0\'a0\'a0 ae1\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 9890\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+xe-0/0/2\'a0\'a0\'a0\'a0 ae1\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0 \'a0\'a0\'a0\'a0\'a0\'a00\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 9888\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+xe-0/0/3\'a0\'a0\'a0\'a0 -\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 9888\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+et-0/0/48\'a0\'a0\'a0 ae0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 5770\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 5769\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+xe-0/0/20\'a0\'a0\'a0 -\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 3\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+et-0/0/49\'a0\'a0\'a0 ae0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 9894\'a0\'a0\'a0\'a0 \'a00\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 9892\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+xe-0/0/21\'a0\'a0\'a0 -\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 3\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 0\'a0\
+\'a0\
+}
